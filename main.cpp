@@ -53,11 +53,11 @@ int main(int argc, char **argv) {
 
 	//create window:
 	SDL_Window *window = SDL_CreateWindow(
-		"gp19 the planet of choices", //TODO: remember to set a title for your game!
+		"Sound Minesweeper",
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-		512, 448, //TODO: modify window size if you'd like
+		400, 500,
 		SDL_WINDOW_OPENGL
-		| SDL_WINDOW_RESIZABLE //uncomment to allow resizing
+		// | SDL_WINDOW_RESIZABLE //uncomment to allow resizing
 		| SDL_WINDOW_ALLOW_HIGHDPI //uncomment for full resolution on high-DPI screens
 	);
 
@@ -93,7 +93,7 @@ int main(int argc, char **argv) {
 	Sound::init();
 
 	//Hide mouse cursor (note: showing can be useful for debugging):
-	//SDL_ShowCursor(SDL_DISABLE);
+	SDL_ShowCursor(SDL_DISABLE);
 
 	//------------ load resources --------------
 	call_load_functions();

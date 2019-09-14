@@ -105,7 +105,7 @@ if $(OS) = NT { #Windows
 } else if $(OS) = LINUX { #Linux
 	NEST_LIBS = ../nest-libs/linux ;
 	C++ = g++ -no-pie ;
-	C++FLAGS = -std=c++17 -g -Wall -Werror ;
+	C++FLAGS = -std=c++17 -g -Wall -Werror -Wno-unused-but-set-variable ;
 	LINK = g++ -no-pie ;
 	LINKFLAGS = -std=c++17 -g -Wall -Werror ;
 	LINKLIBS = ;
@@ -158,7 +158,6 @@ GAME_NAMES =
 	load_wav
 	load_opus
 	DrawSprites
-	MenuMode
 	StoryMode
 	Sprite
 	data_path
@@ -179,7 +178,7 @@ LOCATE_TARGET = objs ; #put objects in 'objs' directory
 Objects $(GAME_NAMES:S=.cpp) $(PACK_SPRITES_NAMES:S=.cpp) ;
 
 LOCATE_TARGET = dist ; #put main in 'dist' directory
-MainFromObjects the-planet : $(GAME_NAMES:S=$(SUFOBJ)) ;
+MainFromObjects sound-minesweeper : $(GAME_NAMES:S=$(SUFOBJ)) ;
 
 LOCATE_TARGET = sprites ; #put pack-sprites utility in the 'sprites' directory:
 MainFromObjects pack-sprites : $(PACK_SPRITES_NAMES:S=$(SUFOBJ)) load_save_png$(SUFOBJ) ;

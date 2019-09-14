@@ -60,6 +60,12 @@ void Sound::PlayingSample::stop(float ramp) {
 	unlock();
 }
 
+void Sound::PlayingSample::set_volume(float new_volume, float ramp) {
+    lock();
+    volume.target = new_volume;
+    volume.ramp = ramp;
+    unlock();
+}
 
 void Sound::init() {
 	if (SDL_InitSubSystem(SDL_INIT_AUDIO) != 0) {
@@ -107,8 +113,8 @@ void Sound::unlock() {
 	if (device) SDL_UnlockAudioDevice(device);
 }
 
-std::shared_ptr< Sound::PlayingSample > Sound::play(Sample const &sample, float pan, float volume) {
-	std::shared_ptr< Sound::PlayingSample > playing_sample = std::make_shared< Sound::PlayingSample >(sample, pan, volume);
+std::shared_ptr< Sound::PlayingSample > Sound::play(Sample const &sample, float pan, float volume, bool loop) {
+	std::shared_ptr< Sound::PlayingSample > playing_sample = std::make_shared< Sound::PlayingSample >(sample, pan, volume, loop);
 	lock();
 	playing_samples.emplace_back(playing_sample);
 	unlock();
@@ -215,7 +221,11 @@ void mix_audio(void *, Uint8 *buffer_, int len) {
 			//update position in sample:
 			playing_sample.i += 1;
 			if (playing_sample.i == playing_sample.data.size()) {
-				break;
+			    if (playing_sample.loop) {
+                    playing_sample.i = 0;
+			    } else {
+                    break;
+			    }
 			}
 
 			//update pan values:

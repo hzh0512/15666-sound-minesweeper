@@ -40,8 +40,9 @@ struct StoryMode : Mode {
 	} hill;
 	
 	glm::vec2 view_min = glm::vec2(0,0);
-	glm::vec2 view_max = glm::vec2(256, 224);
+	glm::vec2 view_max = glm::vec2(400, 500);
 
 	//------ background music -------
 	std::shared_ptr< Sound::PlayingSample > background_music;
+    std::shared_ptr< Sound::PlayingSample > mine_sound;
 };

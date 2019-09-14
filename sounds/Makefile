@@ -6,5 +6,5 @@ ifeq ($(UNAME_S),Linux)
 else
 	OPUSENC = ../../nest-libs/macos/opus-tools/bin/opusenc
 endif
-../dist/cold-dunes.opus : cold-dunes.wav
-	$(OPUSENC) --vbr --bitrate 128 cold-dunes.wav ../dist/cold-dunes.opus
+../dist/sand.opus : sand.wav
+	$(OPUSENC) --vbr --bitrate 128 sand.wav ../dist/sand.opus

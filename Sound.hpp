@@ -67,8 +67,8 @@ struct PlayingSample {
 	Ramp< float > volume = Ramp< float >(1.0f);
 	Ramp< float > pan = Ramp< float >(0.0f);
 
-	PlayingSample(Sample const &sample_, float volume_, float pan_)
-		: data(sample_.data), volume(volume_), pan(pan_) { }
+	PlayingSample(Sample const &sample_, float volume_, float pan_, bool loop_)
+		: data(sample_.data), loop(loop_), volume(volume_), pan(pan_) { }
 };
 
 // ------- global functions -------
@@ -82,7 +82,8 @@ void shutdown(); //call Sound::shutdown() from main.cpp to gracefully(-ish) exit
 std::shared_ptr< PlayingSample > play(
 	Sample const &sample,
 	float volume = 1.0f,
-	float pan = 0.0f //-1.0f == hard left, 1.0f == hard right
+	float pan = 0.0f, //-1.0f == hard left, 1.0f == hard right
+	bool loop = false
 );
 
 //"panic button" to shut off all currently playing sounds:

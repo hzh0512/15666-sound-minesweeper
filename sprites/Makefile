@@ -8,8 +8,8 @@ else
 endif
 
 
-../dist/the-planet.png ../dist/the-planet.atlas : the-planet.xcf the-planet.list trade.xcf trade-font.list extract-sprites.py pack-sprites
-	rm -rf the-planet
-	./extract-sprites.py the-planet.list the-planet --gimp='$(GIMP)'
-	./extract-sprites.py trade-font.list the-planet --gimp='$(GIMP)'
-	./pack-sprites ../dist/the-planet the-planet/*
+../dist/sound-minesweeper.png ../dist/sound-minesweeper.atlas : sound-minesweeper.xcf sound-minesweeper.list trade.xcf trade-font.list extract-sprites.py pack-sprites
+	rm -rf sound-minesweeper
+	./extract-sprites.py sound-minesweeper.list sound-minesweeper --gimp='$(GIMP)'
+	./extract-sprites.py trade-font.list sound-minesweeper --gimp='$(GIMP)'
+	./pack-sprites ../dist/sound-minesweeper sound-minesweeper/*

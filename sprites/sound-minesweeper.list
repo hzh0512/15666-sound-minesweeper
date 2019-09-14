@@ -1,0 +1,5 @@
+sound-minesweeper.xcf?blocks 50 50 +50 +50 +0 +50 "chosen-block"
+sound-minesweeper.xcf?blocks 150 50 +50 +50 +0 +50 "block"
+sound-minesweeper.xcf?blocks 250 50 +50 +50 +0 +50 "red-flag"
+sound-minesweeper.xcf?blocks 350 50 +50 +50 +0 +50 "mine"
+sound-minesweeper.xcf?blocks 450 24 +55 +66 +0 +66 "sweeper"
