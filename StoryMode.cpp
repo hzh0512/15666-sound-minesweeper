@@ -24,6 +24,7 @@ int mouse_x = 0, mouse_y = 0;
 int mine_num = 10, wrong_marked = 0;
 float time_elapsed = 0.;
 bool is_finished = false;
+bool firstTime = true;
 
 Load< SpriteAtlas > sprites(LoadTagDefault, []() -> SpriteAtlas const * {
 	SpriteAtlas const *ret = new SpriteAtlas(data_path("sound-minesweeper"));
@@ -49,6 +50,13 @@ StoryMode::~StoryMode() {
 }
 
 bool StoryMode::handle_event(SDL_Event const &evt, glm::uvec2 const &window_size) {
+    if (evt.type == SDL_KEYUP) {
+        if (evt.key.keysym.sym == SDLK_r) {
+            firstTime = true;
+            return false;
+        }
+    }
+
     if (evt.type == SDL_MOUSEMOTION) {
         mouse_x = evt.motion.x;
         mouse_y = view_max.y - evt.motion.y;
@@ -103,24 +111,38 @@ bool StoryMode::handle_event(SDL_Event const &evt, glm::uvec2 const &window_size
 }
 
 void StoryMode::update(float elapsed) {
-    static bool firstTime = true;
-
     if (firstTime) {
         firstTime = false;
 
+        time_elapsed = 0.f;
+        mine_num = 10;
+        wrong_marked = 0;
+        is_finished = false;
+
         //sand storm
-        background_music = Sound::play(*music_sand, 1.f, 0.0f, true);
+        if (!background_music) {
+            background_music = Sound::play(*music_sand, 1.f, 0.0f, true);
+        }
+
 
         //mine detector
-        std::vector< float > data(size_t(48000), 0.0f);
-        for (uint32_t i = 0; i < data.size(); ++i) {
-            float t = i / float(48000);
-            //phase-modulated sine wave (creates some metal-like sound):
-            data[i] = std::sin(3.1415926f * 2.0f * 220.0f * t + std::sin(3.1415926f * 2.0f * 200.0f * t));
-            //sin wave modulation, feel like unstable:
-            data[i] *= (2 + 0.4 * std::sin(3.1415926f * 2.0f * 1.0f * t));
+        if (!mine_sound) {
+            std::vector< float > data(size_t(48000), 0.0f);
+            for (uint32_t i = 0; i < data.size(); ++i) {
+                float t = i / float(48000);
+                //phase-modulated sine wave (creates some metal-like sound):
+                data[i] = std::sin(3.1415926f * 2.0f * 220.0f * t + std::sin(3.1415926f * 2.0f * 200.0f * t));
+                //sin wave modulation, feel like unstable:
+                data[i] *= (2 + 0.4 * std::sin(3.1415926f * 2.0f * 1.0f * t));
+            }
+            mine_sound = Sound::play(*new Sound::Sample(data), 1.0f, 0.0f, true);
         }
-        mine_sound = Sound::play(*new Sound::Sample(data), 1.0f, 0.0f, true);
+
+        for (unsigned i = 0; i < matrix.size(); ++i) {
+            for (unsigned j = 0; j < matrix[i].size(); ++j) {
+                matrix[i][j] = blank_hidden;
+            }
+        }
 
         // random mine position
         int total = matrix_size * matrix_size, pos;
@@ -227,6 +249,9 @@ void StoryMode::draw(glm::uvec2 const &drawable_size) {
 		}
 
         draw.draw(*minesweeper_sweeper, glm::vec2(mouse_x - 20.0f, mouse_y - 13.0f));
+        draw.draw_text(
+                "press 'r' to restart", glm::vec2(268.0f, 7.0f), 1.0, glm::u8vec4(0x00, 0x00, 0x00, 0xff)
+        );
 	}
 	GL_ERRORS(); //did the DrawSprites do something wrong?
 }
